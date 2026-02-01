@@ -36,10 +36,12 @@ ENV NODE_ENV=production
 # This reduces the attack surface by preventing container escape via root privileges
 
 # Create config directory and minimal config for the node user
-RUN mkdir -p /home/node/.clawdbot && \
-    echo 'gateway:' > /home/node/.clawdbot/config.yaml && \
-    echo '  mode: local' >> /home/node/.clawdbot/config.yaml && \
-    chown -R node:node /home/node/.clawdbot
+# Use .openclaw (new path) and create symlink from legacy .clawdbot
+RUN mkdir -p /home/node/.openclaw && \
+    echo 'gateway:' > /home/node/.openclaw/config.yaml && \
+    echo '  mode: local' >> /home/node/.openclaw/config.yaml && \
+    ln -s /home/node/.openclaw /home/node/.clawdbot && \
+    chown -R node:node /home/node/.openclaw /home/node/.clawdbot
 
 USER node
 ENV HOME=/home/node
