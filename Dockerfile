@@ -43,4 +43,4 @@ RUN mkdir -p /home/node/.openclaw && \
 USER node
 ENV HOME=/home/node
 
-CMD ["node", "dist/index.js", "gateway", "run", "--port", "8080", "--bind", "lan", "--auth", "token"]
+CMD ["node", "dist/index.js", "gateway", "run", "--bind", "lan", "--auth", "token"]
