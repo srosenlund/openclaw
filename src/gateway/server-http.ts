@@ -241,7 +241,7 @@ export function createGatewayHttpServer(opts: {
 
     // Health check endpoint for load balancers and container orchestrators
     const url = new URL(req.url ?? "/", "http://localhost");
-    if (req.method === "GET" && (url.pathname === "/health" || url.pathname === "/")) {
+    if (req.method === "GET" && url.pathname === "/health") {
       res.statusCode = 200;
       res.setHeader("Content-Type", "application/json; charset=utf-8");
       res.end(JSON.stringify({ ok: true }));
