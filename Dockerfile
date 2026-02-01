@@ -37,10 +37,10 @@ ENV NODE_ENV=production
 
 # Create config directory and minimal config for the node user
 RUN mkdir -p /home/node/.openclaw && \
-    echo '{"gateway":{"mode":"local","bind":"lan","controlUi":{"dangerouslyDisableDeviceAuth":true}}}' > /home/node/.openclaw/openclaw.json && \
+    echo '{"gateway":{"mode":"local","bind":"lan","trustedProxies":["172.16.0.0/12","10.0.0.0/8","192.168.0.0/16"],"controlUi":{"dangerouslyDisableDeviceAuth":true,"allowInsecureAuth":true}}}' > /home/node/.openclaw/openclaw.json && \
     chown -R node:node /home/node/.openclaw
 
 USER node
 ENV HOME=/home/node
 
-CMD ["node", "dist/index.js", "gateway", "run", "--bind", "lan", "--auth", "password"]
+CMD ["node", "dist/index.js", "gateway", "run", "--bind", "lan", "--auth", "token"]
