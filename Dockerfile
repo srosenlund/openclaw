@@ -34,6 +34,14 @@ ENV NODE_ENV=production
 # Security hardening: Run as non-root user
 # The node:22-bookworm image includes a 'node' user (uid 1000)
 # This reduces the attack surface by preventing container escape via root privileges
-USER node
 
-CMD ["node", "dist/index.js", "gateway", "run", "--port", "8080", "--allow-unconfigured"]
+# Create config directory and minimal config for the node user
+RUN mkdir -p /home/node/.clawdbot && \
+    echo 'gateway:' > /home/node/.clawdbot/config.yaml && \
+    echo '  mode: local' >> /home/node/.clawdbot/config.yaml && \
+    chown -R node:node /home/node/.clawdbot
+
+USER node
+ENV HOME=/home/node
+
+CMD ["node", "dist/index.js", "gateway", "run", "--port", "8080", "--auth", "token"]
